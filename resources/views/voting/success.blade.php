@@ -51,6 +51,10 @@
                     class="inline-block w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
                     Kembali ke Beranda
                 </a>
+                <a href="/quick-count"
+                    class="mt-3 inline-block w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    Lihat Perhitungan Suara
+                </a>
             </div>
 
         </div>

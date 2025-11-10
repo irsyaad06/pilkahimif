@@ -27,7 +27,7 @@ class VotingController extends Controller
 
         auth()->user()->update(['has_voted' => 1]);
 
-        return redirect()->route('voting.success', [
+        return redirect()->route('voting.already', [
             'id' => $request->candidate_id
         ]);
     }
@@ -36,6 +36,6 @@ class VotingController extends Controller
     public function success($id)
     {
         $paslon = Candidate::findOrFail($id);
-        return view('voting.success', compact('paslon'));
+        return view('voting.already', compact('paslon'));
     }
 }

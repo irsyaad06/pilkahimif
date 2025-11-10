@@ -30,9 +30,21 @@
 
 <body class="bg-gray-100 min-h-screen">
 
+    <header class="bg-white shadow-sm py-6 w-full fixed z-50 top-0 left-0">
+        <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <div class="flex  items-center space-x-4">
+                <img src="{{ asset('img/pilkahim.png') }}" alt="Logo" class="h-12 w-auto">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">VOTING</h1>
+                    <p class="text-sm text-gray-500">Pemilihan Ketua & Wakil Ketua UMUM IF</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <div class="max-w-5xl mx-auto py-12 px-4">
 
-        <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-4 text-gray-800 tracking-tight">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-4 text-gray-800 tracking-tight mt-20">
             Pemilihan Ketua & Wakil
         </h1>
         <p class="text-center text-gray-600 mb-12 text-lg">

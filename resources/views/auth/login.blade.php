@@ -59,6 +59,13 @@
                 <span class="font-medium">Login dengan Google</span>
             </a>
 
+            <div class="mt-3 text-center border-t">
+                <a href="/" class="flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg w-full transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+                    Lihat Quick Count
+                </a>
+            </div>
+
+
             <div class="mt-8 pt-6 border-t border-gray-100 text-center">
                 <p class="text-xs text-gray-400">© {{ date('Y') }} Himpunan Mahasiswa Teknik Informatika - UNIKOM</p>
             </div>
