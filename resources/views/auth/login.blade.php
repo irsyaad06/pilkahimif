@@ -27,10 +27,25 @@
                 Silakan login menggunakan akun mahasiswa Anda.
             </p>
 
+            <!-- ALERT ERROR MESSAGE -->
+            <!-- Bagian ini akan muncul HANYA jika ada session 'error' -->
+            @if (session('error'))
+            <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start" role="alert">
+                <!-- Ikon Error Kecil -->
+                <svg class="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <!-- Pesan Error -->
+                <div class="text-sm text-red-700">
+                    <p class="font-bold">Login Gagal</p>
+                    <p>{{ session('error') }}</p>
+                </div>
+            </div>
+            @endif
+            <!-- END ALERT ERROR MESSAGE -->
+
             <a href="{{ route('auth.google.redirect') }}"
-
-
-                class="flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg w-full transition">
+                class="flex items-center justify-center gap-3 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg w-full transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
 
                 <!-- Google Icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 488 512">
@@ -41,11 +56,11 @@
                         148-118.3H248v-94.8h240c2.2 12.7 4 25.5 4 39.9z" />
                 </svg>
 
-                <span>Login dengan Google</span>
+                <span class="font-medium">Login dengan Google</span>
             </a>
 
-            <div class="mt-6 text-center">
-                <p class="text-xs text-gray-500">© {{ date('Y') }} Himpunan Mahasiswa Teknik Informatika - UNIKOM</p>
+            <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+                <p class="text-xs text-gray-400">© {{ date('Y') }} Himpunan Mahasiswa Teknik Informatika - UNIKOM</p>
             </div>
 
         </div>

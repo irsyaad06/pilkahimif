@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\MahasiswaAktif; // ✅ IMPORT MODEL INI
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -27,19 +28,9 @@ class GoogleAuthController extends Controller
             return false;
         }
 
-        // ✅ jurusan 101 (Teknik Informatika)
+        // ✅ jurusan 101 (Teknik Informatika) - Opsional, jika di MahasiswaAktif sudah pasti 101, ini bisa dihapus, tapi dibiarkan untuk layer keamanan tambahan.
         $jurusan = substr($nim, 0, 3);
         if ($jurusan !== '101') {
-            return false;
-        }
-
-        // ✅ validasi angkatan otomatis
-        $angkatan = intval(substr($nim, 3, 2));
-        $currentYear = intval(date('y'));     // contoh 25 kalau 2025
-        $minAngkatan = $currentYear - 3;      // contoh 22
-        $maxAngkatan = $currentYear;          // 25
-
-        if ($angkatan < $minAngkatan || $angkatan > $maxAngkatan) {
             return false;
         }
 
@@ -48,63 +39,106 @@ class GoogleAuthController extends Controller
 
     public function callback()
     {
-        $googleUser = Socialite::driver('google')->stateless()->user();
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+        } catch (\Exception $e) {
+            return redirect('/login')->with('error', 'Gagal mengambil data dari Google. Silakan coba lagi.');
+        }
+
         $email = $googleUser->getEmail();
+
+        // ---------------------------------------------------
+        // BYPASS UNTUK ADMIN (Opsional)
+        // Jika Anda ingin Admin tetap bisa login meskipun NIM-nya tidak ada di MahasiswaAktif,
+        // uncomment blok kode di bawah ini:
+        /*
+        if ($this->isAdminEmail($email)) {
+             $this->loginOrCreateUser($googleUser, $email, 'ADMIN', true);
+             return redirect('/admin');
+        }
+        */
+        // ---------------------------------------------------
 
         // ✅ 1. Validasi domain
         if (!str_ends_with($email, '@mahasiswa.unikom.ac.id')) {
-            return redirect('/login')->with('error', 'Login hanya untuk email mahasiswa.unikom.ac.id');
+            return redirect('/login')->with('error', 'Login hanya untuk email @mahasiswa.unikom.ac.id');
         }
 
         // ✅ 2. Validasi format nama.nim
         $local = strstr($email, '@', true);
         $parts = explode('.', $local);
 
-        if (count($parts) < 2 || !is_numeric($parts[1])) {
-            return redirect('/login')->with('error', 'Format email tidak valid. Gunakan format nama.nim@mahasiswa.unikom.ac.id');
+        // Pastikan part terakhir adalah angka (asumsi NIM ada di akhir, misal: nama.depan.nim)
+        // Jika format selalu "nama.nim" (hanya 2 bagian), gunakan logika Anda sebelumnya.
+        // Tapi untuk jaga-jaga jika ada nama 3 suku kata (budi.santoso.10120001), kita ambil part terakhir sebagai NIM.
+        $potentialNim = end($parts);
+
+        if (count($parts) < 2 || !is_numeric($potentialNim)) {
+            return redirect('/login')->with('error', 'Format email tidak valid. Gunakan email kampus dengan NIM.');
         }
 
-        // ✅ extract NIM
-        $nim = $parts[1];
+        $nim = $potentialNim;
 
-        // ✅ 3. Validasi aturan NIM (jurusan + angkatan)
+        // ✅ 3. Validasi aturan NIM (struktural)
         if (!$this->validateStudentNim($nim)) {
-            return redirect('/login')->with('error', 'NIM tidak valid atau bukan dari jurusan/angkatan yang diizinkan.');
+            return redirect('/login')->with('error', 'NIM tidak valid atau bukan dari jurusan yang diizinkan.');
         }
 
-        // ✅ 4. Lanjut login / register
-        $user = User::where('google_id', $googleUser->getId())->first();
+        // ✅ 4. [BARU] Validasi NIM terdaftar di MahasiswaAktif
+        // Mengecek apakah NIM ini ada di tabel mahasiswa_aktif
+        $mahasiswaTerdaftar = MahasiswaAktif::where('nim', $nim)->exists();
 
-        if (!$user) {
-            $user = User::where('email', $email)->first();
-
-            if (!$user) {
-                $user = User::create([
-                    'name'      => $googleUser->getName(),
-                    'email'     => $email,
-                    'nim'       => $nim,
-                    'google_id' => $googleUser->getId(),
-                    'is_admin'  => $this->isAdminEmail($email),
-                ]);
-            } else {
-                $user->update([
-                    'nim'       => $nim,
-                    'google_id' => $googleUser->getId(),
-                    'is_admin'  => $this->isAdminEmail($email),
-                ]);
-            }
-        } else {
-            $user->update([
-                'nim'      => $nim,
-                'is_admin' => $this->isAdminEmail($email),
-            ]);
+        if (!$mahasiswaTerdaftar) {
+            // Jika tidak ditemukan di tabel MahasiswaAktif, tolak login
+            return redirect('/login')->with('error', 'Maaf, NIM Anda tidak terdaftar sebagai mahasiswa aktif Teknik Informatika yang berhak memilih.');
         }
+
+        // ✅ 5. Lanjut login / register user
+        $user = $this->loginOrCreateUser($googleUser, $email, $nim, $this->isAdminEmail($email));
 
         Auth::login($user);
 
         return $user->is_admin
             ? redirect('/admin')
             : redirect('/');
+    }
+
+    /**
+     * Dipisah ke fungsi private agar lebih rapi
+     */
+    private function loginOrCreateUser($googleUser, $email, $nim, $isAdmin)
+    {
+        $user = User::where('google_id', $googleUser->getId())->first();
+
+        if (!$user) {
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                // Create new user
+                $user = User::create([
+                    'name'      => $googleUser->getName(),
+                    'email'     => $email,
+                    'nim'       => $nim,
+                    'google_id' => $googleUser->getId(),
+                    'is_admin'  => $isAdmin,
+                ]);
+            } else {
+                // Update existing email user with google_id
+                $user->update([
+                    'nim'       => $nim,
+                    'google_id' => $googleUser->getId(),
+                    'is_admin'  => $isAdmin,
+                ]);
+            }
+        } else {
+            // Update existing google user
+            $user->update([
+                'nim'      => $nim,
+                'is_admin' => $isAdmin,
+            ]);
+        }
+
+        return $user;
     }
 
     public function logout()

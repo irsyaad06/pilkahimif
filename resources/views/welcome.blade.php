@@ -28,6 +28,9 @@
             </h1>
 
             <p class="text-gray-600 mb-6">
+                Nim anda : <b> {{ auth()->user()->nim }}</b>
+            </p>
+            <p class="text-gray-600 mb-6">
                 Anda berhasil login menggunakan <b>Google</b>.
             </p>
 

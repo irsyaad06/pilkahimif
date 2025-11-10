@@ -110,7 +110,7 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-gray-900 mb-1 flex items-center">
-                                <svg class="w-4 h-4 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                 </svg>
                                 Misi
@@ -130,7 +130,7 @@
                         <button
                             type="button"
                             onclick="openModal('{{ $p->id }}', '{{ $p->nomor_urut }}', '{{ addslashes($p->calon_ketua) }}', '{{ addslashes($p->calon_wakil_ketua) }}')"
-                            class="w-full py-4 px-6 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white text-lg font-bold rounded-xl shadow-lg hover:shadow-green-500/30 transition-all duration-300 transform hover:scale-[1.02] focus:ring-4 focus:ring-green-500/50 active:scale-95 flex items-center justify-center group">
+                            class="w-full py-4 px-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg font-bold rounded-xl shadow-lg hover:shadow-blue-500/30 transition-all duration-300 transform hover:scale-[1.02] focus:ring-4 focus:ring-blue-500/50 active:scale-95 flex items-center justify-center group">
                             <span>PILIH PASLON {{ $p->nomor_urut }}</span>
                             <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -196,7 +196,7 @@
                     <!-- Input hidden ini akan diisi oleh Javascript -->
                     <input type="hidden" name="candidate_id" id="modalCandidateId" value="">
 
-                    <button type="submit" class="w-full py-3 px-4 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-lg shadow-green-500/30">
+                    <button type="submit" class="w-full py-3 px-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg shadow-blue-500/30">
                         Ya, Saya Yakin!
                     </button>
                 </form>
