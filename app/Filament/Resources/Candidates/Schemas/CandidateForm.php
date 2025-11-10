@@ -6,6 +6,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\RichEditor;
 
 class CandidateForm
 {
@@ -25,10 +26,28 @@ class CandidateForm
                     ->image()
                     ->directory('candidates')
                     ->disk('public'),
+                TextInput::make('link_perkenalan')
+                    ->required()
+                    ->url() // otomatis wajib http/https
+                    ->prefix('https://'),
+
                 Textarea::make('visi')
                     ->columnSpanFull(),
-                Textarea::make('misi')
-                    ->columnSpanFull(),
+                RichEditor::make('misi')
+                    ->required()
+                    ->columnSpanFull()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strike',
+                        'bulletList',
+                        'orderedList',
+                        'link',
+                        'redo',
+                        'undo',
+                    ]),
+
             ]);
     }
 }

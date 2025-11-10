@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('calon_wakil_ketua');
             $table->integer('nomor_urut');
             $table->string('foto')->nullable();
+            $table->string('link_perkenalan');
             $table->text('visi')->nullable();
             $table->text('misi')->nullable();
             $table->timestamps();

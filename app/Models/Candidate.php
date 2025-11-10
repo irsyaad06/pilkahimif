@@ -10,6 +10,7 @@ class Candidate extends Model
         'calon_ketua',
         'calon_wakil_ketua',
         'nomor_urut',
+        'link_perkenalan',
         'foto',
         'visi',
         'misi'

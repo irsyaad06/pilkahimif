@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting</title>
+    <link rel="icon" type="image/png" href="{{ asset('img/pilkahim.png') }}">
+    <title>Voting - PILKAHIMIF</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">

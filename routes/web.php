@@ -11,19 +11,15 @@ Route::get('/login', function () {
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('auth');
+
 
 Route::post('/logout', [GoogleAuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
-
-Route::get('/voting/welcome', function () {
-    return view('voting.welcome');
-})->middleware('auth')->name('voting.welcome');
 
 Route::get('/voting', [VotingController::class, 'index'])
     ->middleware(['auth', 'check.has.voted'])->name('voting.page');
