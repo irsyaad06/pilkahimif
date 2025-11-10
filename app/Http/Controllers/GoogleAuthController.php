@@ -63,6 +63,17 @@ class GoogleAuthController extends Controller
 
         return $user->is_admin
             ? redirect('/admin')
-            : redirect('/voting');
+            : redirect('/');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        // Hapus session supaya benar-benar logout
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect('/login');
     }
 }

@@ -17,6 +17,7 @@ class User extends Authenticatable
         'email',
         'google_id',
         'is_admin',
+        'has_voted',
     ];
 
     public function vote()
