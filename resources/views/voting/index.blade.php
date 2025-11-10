@@ -36,7 +36,7 @@
                 <img src="{{ asset('img/pilkahim.png') }}" alt="Logo" class="h-12 w-auto">
                 <div>
                     <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">VOTING</h1>
-                    <p class="text-sm text-gray-500">Pemilihan Ketua & Wakil Ketua UMUM IF</p>
+                    <p class="text-sm text-gray-500">Pemilihan Ketua & Wakil Ketua Umum HMIF</p>
                 </div>
             </div>
         </div>

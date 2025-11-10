@@ -7,6 +7,12 @@ use App\Http\Controllers\CountController;
 
 
 Route::get('/login', function () {
+
+    if (auth()->check()) {
+        return redirect('/');
+    }
+
+    // Jika belum login, tampilkan halaman login
     return view('auth.login');
 })->name('login');
 
