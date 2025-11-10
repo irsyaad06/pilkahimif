@@ -46,12 +46,14 @@
                 </div>
             </div>
 
-            <div class="flex gap-5 items-center">
+            <div class="flex gap-4 items-center">
+
+
 
                 <!-- DROPDOWN MENU AREA -->
                 <div class="hidden sm:block relative" id="dropdown-container">
 
-                    <!-- Tombol Trigger Dropdown -->
+                    <!-- Tombol Trigger Dropdown (Burger Menu) -->
                     <button onclick="toggleDropdown(event)"
                         class="inline-flex items-center justify-center p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-300 focus:outline-none">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -62,20 +64,57 @@
                     <!-- Isi Dropdown -->
                     <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg py-2 z-50 ring-1 ring-black ring-opacity-5 transform origin-top-right transition-all">
                         <div class="px-4 py-2 border-b border-gray-100 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            @auth
+                            Halo, {{ explode(' ', auth()->user()->name)[0] }}
+                            @else
                             Pilih Menu
+                            @endauth
                         </div>
-                        <a href="/voting" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition ease-in-out duration-150">
-                            <!-- Ikon Google Sederhana -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 mr-3" fill="currentColor" viewBox="0 0 512 512">
-                                <path d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zM256 368c-13.255 0-24-10.745-24-24s10.745-24 24-24 24 10.745 24 24-10.745 24-24 24zm120-144H136c-8.837 0-16-7.163-16-16s7.163-16 16-16h240c8.837 0 16 7.163 16 16s-7.163 16-16 16zM136 208c-8.837 0-16-7.163-16-16s7.163-16 16-16h240c8.837 0 16 7.163 16 16s-7.163 16-16 16z" />
+
+                        @guest
+                        <!-- Menu untuk GUEST (Belum Login) -->
+                        <a href="{{ route('auth.google.redirect') }}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition ease-in-out duration-150">
+                            <!-- Ikon Google -->
+                            <svg class="h-5 w-5 mr-3 text-gray-400" viewBox="0 0 488 512" fill="currentColor">
+                                <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C323.6 89.5 288.4 76 248 76c-94.5 0-171 78.2-171 180s76.5 180 171 180c86.7 0 141.7-49.3 148-118.3H248v-94.8h240c2.2 12.7 4 25.5 4 39.9z" />
                             </svg>
-                            Vote Sekarang
+                            Login Google
                         </a>
+                        @endguest
+
+                        @auth
+                        <!-- Menu untuk USER (Sudah Login) -->
+                        <a href="/voting" class="flex items-center px-4 py-3 text-sm text-blue-600 hover:bg-blue-50 transition ease-in-out duration-150 font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            Halaman Voting
+                        </a>
+
+                        <!-- Tombol Logout -->
+                        <form action="{{ route('logout') }}" method="POST" class="block w-full border-t border-gray-100">
+                            @csrf
+                            <button type="submit" class="flex w-full items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition ease-in-out duration-150">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Logout
+                            </button>
+                        </form>
+                        @endauth
                     </div>
 
                 </div>
                 <!-- END DROPDOWN MENU AREA -->
-
+                <!-- AVATAR USER (Hanya muncul jika login) -->
+                @auth
+                <div class="hidden sm:block">
+                    <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=random&color=fff' }}"
+                        alt="{{ auth()->user()->name }}"
+                        class="w-10 h-10 rounded-full border-2 border-blue-100 shadow-sm object-cover"
+                        title="{{ auth()->user()->name }}">
+                </div>
+                @endauth
             </div>
         </div>
     </header>
@@ -171,7 +210,7 @@
         </div>
 
         <!-- Footer / Last Update -->
-        <div class="text-center text-sm text-gray-500 flex items-center justify-center">
+        <div class="text-center text-sm text-gray-500 flex items-center justify-center space-x-2">
             <svg class="w-4 h-4 text-green-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 16.364H18.364M5.636 12H18.364M5.636 7.636H18.364"></path>
             </svg>
