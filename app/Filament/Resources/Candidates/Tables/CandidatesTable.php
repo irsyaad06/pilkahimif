@@ -16,7 +16,11 @@ class CandidatesTable
         return $table
             ->columns([
                 ImageColumn::make('foto'),
-                TextColumn::make('nama_paslon')
+                TextColumn::make('nomor_urut')
+                    ->searchable(),
+                TextColumn::make('calon_ketua')
+                    ->searchable(),
+                TextColumn::make('calon_wakil_ketua')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

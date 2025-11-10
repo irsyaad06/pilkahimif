@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Candidate extends Model
 {
     protected $fillable = [
-        'nama_paslon',
+        'calon_ketua',
+        'calon_wakil_ketua',
+        'nomor_urut',
         'foto',
         'visi',
         'misi'

@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_paslon');
+            $table->string('calon_ketua');
+            $table->string('calon_wakil_ketua');
+            $table->integer('nomor_urut');
             $table->string('foto')->nullable();
             $table->text('visi')->nullable();
             $table->text('misi')->nullable();

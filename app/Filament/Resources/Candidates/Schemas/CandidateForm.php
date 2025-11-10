@@ -13,8 +13,13 @@ class CandidateForm
     {
         return $schema
             ->components([
-                TextInput::make('nama_paslon')
+                TextInput::make('calon_ketua')
                     ->required(),
+                TextInput::make('calon_wakil_ketua')
+                    ->required(),
+                TextInput::make('nomor_urut')
+                    ->required()
+                    ->numeric(),
                 FileUpload::make('foto')
                     ->required()
                     ->image()
