@@ -22,17 +22,18 @@
             <div class="bg-white shadow-xl rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
 
                 <div class="aspect-square">
-                    <img src="{{ $p->foto }}" alt="Foto Paslon: {{ $p->calon_ketua }}"
-                        class="w-full h-full object-cover">
+
+                    <img src="{{ asset('storage/' . $p->foto) }}" alt="" class="w-full h-full object-cover">
+
                 </div>
 
-                <div class="p-6 flex flex-col flex-grow">
+                <div class="p-6 flex flex-col">
 
                     <h2 class="text-2xl font-bold text-center text-gray-900 mb-4">
                         {{ $p->calon_ketua }} &<br> {{ $p->calon_wakil_ketua }}
                     </h2>
 
-                    <div class="space-y-4 text-sm text-gray-700 mb-6 flex-grow">
+                    <div class="space-y-4 text-sm text-gray-700 mb-6">
                         <div>
                             <h3 class="font-semibold text-base text-gray-800 mb-1">Visi:</h3>
                             <p class="line-clamp-3">
@@ -63,7 +64,8 @@
                     </p>
                     @endif
 
-                </div> </div> @endforeach
+                </div>
+            </div> @endforeach
 
         </div>
     </div>

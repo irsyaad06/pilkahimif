@@ -23,7 +23,8 @@ class CandidateForm
                 FileUpload::make('foto')
                     ->required()
                     ->image()
-                    ->directory('candidates'),
+                    ->directory('candidates')
+                    ->disk('public'),
                 Textarea::make('visi')
                     ->columnSpanFull(),
                 Textarea::make('misi')

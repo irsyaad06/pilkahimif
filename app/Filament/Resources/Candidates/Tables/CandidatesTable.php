@@ -15,7 +15,11 @@ class CandidatesTable
     {
         return $table
             ->columns([
-                ImageColumn::make('foto'),
+                ImageColumn::make('foto')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->square(),
+
                 TextColumn::make('nomor_urut')
                     ->searchable(),
                 TextColumn::make('calon_ketua')
