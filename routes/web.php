@@ -50,7 +50,21 @@ Route::get('/', [CountController::class, 'index'])
 
 Route::get('/statistik', [CountController::class, 'statistics'])->name('pemilih.index');
 
-// Waktu Pemilihan routes for frontend
+
+// Route::get('/panduan-informasi', function () {
+//     return view('pages.index');
+// })->name('pages.index');
+
+Route::get('/panduan-informasi', function () {
+    // 2. AMBIL DATA PERIODE VOTING (kita asumsikan hanya ada 1 periode aktif)
+    $votingPeriod = WaktuPemilihan::where('is_active', true)->first();
+    
+    // 3. KIRIM DATA KE VIEW
+    return view('pages.index', [
+        'votingPeriod' => $votingPeriod
+    ]);
+})->name('pages.index');
+
 Route::get('/api/waktu-pemilihan', [WaktuPemilihanController::class, 'index']);
 Route::get('/api/waktu-pemilihan/current', [WaktuPemilihanController::class, 'current']);
 Route::get('/api/waktu-pemilihan/{id}', [WaktuPemilihanController::class, 'show']);

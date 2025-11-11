@@ -52,11 +52,18 @@
                 </svg>
                 Lihat Perhitungan Suara
             </a>
+
             @elseif ($isVotingOpen)
-            <a href="{{ route('voting.page') }}"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition">
-                Voting Sekarang
-            </a>
+            <div >
+                 <a href="{{ route('pages.index') }}"
+                    class="mt-3 inline-flex items-center justify-center w-full sm:w-auto bg-yellow-600 hover:bg-yellow-800 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    Lihat Panduan
+                </a>
+                <a href="{{ route('voting.page') }}"
+                    class="mt-3 inline-flex items-center justify-center w-full sm:w-auto bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    Voting Sekarang
+                </a>
+            </div>
             @else
             <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg" role="alert">
                 <p class="font-bold">Voting Belum Dibuka atau Sudah Berakhir</p>
