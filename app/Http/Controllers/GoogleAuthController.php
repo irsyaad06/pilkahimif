@@ -99,7 +99,7 @@ class GoogleAuthController extends Controller
         Auth::login($user);
 
         return $user->is_admin
-            ? redirect('/admin')
+            ? redirect('/admin-pilkahimif-2025')
             : redirect('/welcome');
     }
 

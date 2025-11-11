@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\VotingController;
 use App\Http\Controllers\CountController;
+use App\Http\Controllers\WaktuPemilihanController;
 
 
 Route::get('/login', function () {
@@ -39,3 +40,8 @@ Route::get('/voting/already', function () {
 
 Route::get('/', [CountController::class, 'index'])
     ->name('quick.count');
+
+// Waktu Pemilihan routes for frontend
+Route::get('/api/waktu-pemilihan', [WaktuPemilihanController::class, 'index']);
+Route::get('/api/waktu-pemilihan/current', [WaktuPemilihanController::class, 'current']);
+Route::get('/api/waktu-pemilihan/{id}', [WaktuPemilihanController::class, 'show']);
