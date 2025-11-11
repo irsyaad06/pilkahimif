@@ -48,6 +48,8 @@ Route::get('/voting/already', function () {
 Route::get('/', [CountController::class, 'index'])
     ->name('quick.count');
 
+Route::get('/statistik', [CountController::class, 'statistics'])->name('pemilih.index');
+
 // Waktu Pemilihan routes for frontend
 Route::get('/api/waktu-pemilihan', [WaktuPemilihanController::class, 'index']);
 Route::get('/api/waktu-pemilihan/current', [WaktuPemilihanController::class, 'current']);
