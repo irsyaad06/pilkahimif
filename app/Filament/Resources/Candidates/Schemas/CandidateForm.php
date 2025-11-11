@@ -25,7 +25,8 @@ class CandidateForm
                     ->required()
                     ->image()
                     ->directory('candidates')
-                    ->disk('public'),
+                    ->disk('public')
+                    ->visibility('public'),
                 TextInput::make('link_perkenalan')
                     ->required()
                     ->url() // otomatis wajib http/https
