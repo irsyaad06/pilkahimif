@@ -47,7 +47,7 @@
                     </svg>
                 </div>
                 <div>
-                    <div class="text-sm font-medium text-gray-500">Total Pemilih Terdaftar</div>
+                    <div class="text-sm font-medium text-gray-500">Total Mahasiswa Aktif</div>
                     <div class="text-3xl font-extrabold text-gray-900">{{ number_format($totalVoters) }}</div>
                 </div>
             </div>
@@ -106,11 +106,11 @@
                                 <div class="text-sm font-bold text-gray-900">Angkatan {{ $batch->angkatan_lengkap }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ number_format($batch->sudah_memilih) }}</div>
+                                <div class="text-sm text-gray-900">{{ number_format($batch->sudah_memilih) }} Mhs</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <!-- PERBAIKAN: Menggunakan 'total_pemilih' (dari controller) bukan 'total' -->
-                                <div class="text-sm text-gray-900">{{ number_format($batch->total_pemilih) }}</div>
+                                <div class="text-sm text-gray-900">{{ number_format($batch->total_pemilih) }} Mhs</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
