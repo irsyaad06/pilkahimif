@@ -40,15 +40,32 @@
             </p>
 
 
-            @if (!auth()->user()->has_voted)
+            @if (auth()->user()->has_voted)
+            <p class="text-green-600 font-semibold mt-4">
+                Anda sudah melakukan voting ✅
+            </p>
+
+            <a href="/"
+                class="mt-3 inline-flex items-center justify-center w-full sm:w-auto bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 16.364H18.364M5.636 12H18.364M5.636 7.636H18.364"></path>
+                </svg>
+                Lihat Perhitungan Suara
+            </a>
+            @elseif ($isVotingOpen)
             <a href="{{ route('voting.page') }}"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition">
                 Voting Sekarang
             </a>
             @else
-            <p class="text-green-600 font-semibold mt-4">
-                Anda sudah melakukan voting ✅
-            </p>
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg" role="alert">
+                <p class="font-bold">Voting Belum Dibuka atau Sudah Berakhir</p>
+                @if ($votingPeriod)
+                <p>Jadwal voting: {{ $votingPeriod->waktu_mulai->format('d M Y, H:i') }} - {{ $votingPeriod->waktu_berakhir->format('d M Y, H:i') }}</p>
+                @else
+                <p>Jadwal voting belum ditentukan.</p>
+                @endif
+            </div>
 
             <a href="/"
                 class="mt-3 inline-flex items-center justify-center w-full sm:w-auto bg-blue-600 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">

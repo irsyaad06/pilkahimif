@@ -84,12 +84,28 @@
 
                         @auth
                         <!-- Menu untuk USER (Sudah Login) -->
-                        <a href="/voting" class="flex items-center px-4 py-3 text-sm text-blue-600 hover:bg-blue-50 transition ease-in-out duration-150 font-medium">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                            Halaman Voting
-                        </a>
+                        @if (auth()->user()->has_voted)
+                            <div class="flex items-center px-4 py-3 text-sm text-green-600 font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                Anda Sudah Vote
+                            </div>
+                        @elseif ($isVotingOpen)
+                            <a href="/voting" class="flex items-center px-4 py-3 text-sm text-blue-600 hover:bg-blue-50 transition ease-in-out duration-150 font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                Halaman Voting
+                            </a>
+                        @else
+                            <div class="flex items-center px-4 py-3 text-sm text-gray-500 font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Pemilihan Selesai
+                            </div>
+                        @endif
 
                         <!-- Tombol Logout -->
                         <form action="{{ route('logout') }}" method="POST" class="block w-full border-t border-gray-100">
@@ -211,11 +227,19 @@
 
         <!-- Footer / Last Update -->
         <div class="text-center text-sm text-gray-500 flex items-center justify-center space-x-2">
+            @php
+                // Tentukan waktu update yang akan ditampilkan.
+                // Jika waktu update terakhir melebihi waktu berakhir pemilihan, tampilkan waktu berakhir pemilihan.
+                $displayTime = $lastUpdate;
+                if ($votingPeriod && $votingPeriod->waktu_berakhir && $lastUpdate->gt($votingPeriod->waktu_berakhir)) {
+                    $displayTime = $votingPeriod->waktu_berakhir;
+                }
+            @endphp
             <svg class="w-4 h-4 text-green-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.636 16.364H18.364M5.636 12H18.364M5.636 7.636H18.364"></path>
             </svg>
             <span>
-                Data diperbarui otomatis setiap 60 detik. Terakhir update: <span class="font-semibold text-gray-700">{{ $lastUpdate->format('H:i:s d-m-Y') }}</span>
+                Data diperbarui otomatis setiap 60 detik. Terakhir update: <span class="font-semibold text-gray-700">{{ $displayTime->format('H:i:s d-m-Y') }}</span>
             </span>
         </div>
 

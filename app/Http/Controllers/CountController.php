@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Candidate;
 use App\Models\Vote;
-use Illuminate\Http\Request;
+use App\Models\WaktuPemilihan;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+
 
 class CountController extends Controller
 {
@@ -19,16 +22,19 @@ class CountController extends Controller
 
         // Menghitung total seluruh suara masuk
         $totalVotes = Vote::count();
+        $lastVote = Vote::latest()->first();
+        $lastUpdate = $lastVote ? $lastVote->created_at : Carbon::now();
 
-        // (Opsional) Jika Anda punya model untuk total DPT (Daftar Pemilih Tetap)
-        // $totalDpt = \App\Models\User::count(); 
-        // Untuk saat ini kita pakai dummy atau bisa Anda sesuaikan nanti
-        // $participationRate = $totalDpt > 0 ? ($totalVotes / $totalDpt) * 100 : 0;
+        // Mengambil status periode voting
+        $votingPeriod = WaktuPemilihan::first();
+        $isVotingOpen = $votingPeriod ? $votingPeriod->isVotingOpen() : false;
 
         return view('livecount.index', [
             'candidates' => $candidates,
             'totalVotes' => $totalVotes,
-            'lastUpdate' => Carbon::now()
+            'lastUpdate' => $lastUpdate,
+            'isVotingOpen' => $isVotingOpen, // Mengirim variabel ke view
+            'votingPeriod' => $votingPeriod,
         ]);
     }
 }
