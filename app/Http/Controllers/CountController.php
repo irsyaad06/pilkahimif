@@ -41,49 +41,32 @@ class CountController extends Controller
 
     public function statistics()
     {
-        // 1. Total DPT (dari MahasiswaAktif)
+
         $totalVoters = MahasiswaAktif::count();
-
-        // 2. Total yang sudah memilih (dari User)
         $votedCount = User::where('has_voted', true)->count();
-
-        // 3. Total yang belum memilih
         $notVotedCount = $totalVoters - $votedCount;
-
-        // --- Variabel 1 (Sesuai Permintaan Anda) ---
-        // Mengambil data 'sudah_memilih' dari tabel 'users'
-        // Kuncinya adalah angkatan 2 digit (cth: "22", "21")
         $votedPerAngkatan = User::where('has_voted', true)
             ->select(
                 DB::raw('SUBSTRING(nim, 4, 2) as angkatan_short'),
                 DB::raw('COUNT(*) as sudah_memilih')
             )
-            ->groupBy('angkatan_short') // Group by alias 'angkatan_short'
+            ->groupBy('angkatan_short')
             ->get()
-            ->pluck('sudah_memilih', 'angkatan_short'); // Hasil: ['22' => 1, '21' => 10]
-
-        // --- Variabel 2 (Sesuai Permintaan Anda) ---
-        // Mengambil data 'total_pemilih' dari tabel 'mahasiswa_aktif'
-        // Ini adalah "master list" kita.
-        // Kuncinya adalah angkatan 4 digit (cth: "2022", "2021")
+            ->pluck('sudah_memilih', 'angkatan_short');
         $votersByBatch = MahasiswaAktif::select(
-            'angkatan', // Kolom 'angkatan' (e.g., "2022")
+            'angkatan',
             DB::raw('COUNT(*) as total_pemilih')
         )
-            ->groupBy('angkatan') // Query ini valid dan tidak akan error 1055
+            ->groupBy('angkatan')
             ->orderBy('angkatan', 'desc')
             ->get()
             ->map(function ($item) use ($votedPerAngkatan) {
 
-                // $item->angkatan adalah "2022", "2021", dll.
-                // $item->total_pemilih adalah totalnya.
 
-                // Buat "kunci pendek" (short key) untuk mencocokkan dengan Variabel 1
-                // "2022" -> "22"
                 $shortKey = substr($item->angkatan, -2);
 
                 // --- Penggabungan ---
-                // Cari $shortKey ("22") di dalam data $votedPerAngkatan
+
                 $item->sudah_memilih = $votedPerAngkatan->get($shortKey) ?? 0;
 
                 // Set data lain untuk view
@@ -93,7 +76,6 @@ class CountController extends Controller
                 return $item;
             });
 
-        // 6. Kirim semua data ke view
         return view('pemilih.index', compact(
             'totalVoters',
             'votedCount',
